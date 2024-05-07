@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="images">
+    <file>add-user.png</file>
+    <file>remove-user.png</file>
+    <file>no-group.png</file>
+    <file>group.png</file>
+    <file>password.png</file>
+    <file>add-group.png</file>
     <file>location.png</file>
     <file>copy.png</file>
     <file>trash-can.png</file>

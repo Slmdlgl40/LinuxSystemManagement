@@ -315,7 +315,7 @@ background-color:#dfdfdf
          <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
-       <widget class="QToolButton" name="toolButton_2">
+       <widget class="QToolButton" name="toolButton_github">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -550,7 +550,7 @@ QToolButton:hover
 background-color:#dfdfdf
 }</string>
        </property>
-       <widget class="QToolButton" name="toolButton_exit_8">
+       <widget class="QToolButton" name="toolButton_copy_file">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -584,7 +584,7 @@ background-color:#dfdfdf
          <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
-       <widget class="QToolButton" name="toolButton_exit_7">
+       <widget class="QToolButton" name="toolButton_delete_file">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -618,7 +618,7 @@ background-color:#dfdfdf
          <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
-       <widget class="QToolButton" name="toolButton_exit_4">
+       <widget class="QToolButton" name="toolButton_file_perm">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -652,7 +652,7 @@ background-color:#dfdfdf
          <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
-       <widget class="QToolButton" name="toolButton_exit_9">
+       <widget class="QToolButton" name="toolButton_move_file">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -686,7 +686,7 @@ background-color:#dfdfdf
          <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
-       <widget class="QToolButton" name="toolButton_exit_3">
+       <widget class="QToolButton" name="toolButton_edit_file">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -742,7 +742,7 @@ QToolButton:hover
 background-color:#dfdfdf
 }</string>
        </property>
-       <widget class="QToolButton" name="toolButton_4">
+       <widget class="QToolButton" name="toolButton_new_file">
         <property name="geometry">
          <rect>
           <x>270</x>
@@ -776,7 +776,7 @@ background-color:#dfdfdf
          <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
-       <widget class="QToolButton" name="toolButton_chng_usr_3">
+       <widget class="QToolButton" name="toolButton_upload_file">
         <property name="geometry">
          <rect>
           <x>70</x>
@@ -810,7 +810,7 @@ background-color:#dfdfdf
          <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
-       <widget class="QToolButton" name="toolButton_disconnect_3">
+       <widget class="QToolButton" name="toolButton_download_file">
         <property name="geometry">
          <rect>
           <x>470</x>
@@ -867,7 +867,7 @@ background-color:white;
 border-radius:10px;
 }</string>
        </property>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="lineEdit_search_file">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -949,6 +949,302 @@ border-radius:10px;
       <property name="styleSheet">
        <string notr="true">background-color:yellow</string>
       </property>
+      <widget class="QWidget" name="widget_9" native="true">
+       <property name="geometry">
+        <rect>
+         <x>690</x>
+         <y>0</y>
+         <width>181</width>
+         <height>571</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QToolButton
+{
+background-color:white;
+border-radius:20px;
+}
+
+QToolButton:hover
+{
+background-color:#dfdfdf
+}</string>
+       </property>
+       <widget class="QToolButton" name="toolButton_add_group">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>340</y>
+          <width>160</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Gruba Ekle</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/group.png</normaloff>:/images/group.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_change_pass">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>160</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Şifre Değiştir</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/password.png</normaloff>:/images/password.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_remove_group">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>450</y>
+          <width>160</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Gruptan Çıkar</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/no-group.png</normaloff>:/images/no-group.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_delete_user">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>160</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Kullanıcıyı Sil</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/remove-user.png</normaloff>:/images/remove-user.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_new_user">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>230</y>
+          <width>160</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Yeni Kullanıcı</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/add-user.png</normaloff>:/images/add-user.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="widget_12" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>440</y>
+         <width>691</width>
+         <height>131</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QToolButton
+{
+background-color:white;
+border-radius:20px;
+}
+
+QToolButton:hover
+{
+background-color:#dfdfdf
+}</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="widget_13" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>681</width>
+         <height>571</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton
+{
+background-color:white;
+border-radius:20px;
+}
+
+QPushButton:hover
+{
+background-color:#dfdfdf
+}
+
+QTableWidget
+{
+background-color:white;
+border-radius:10px;
+}</string>
+       </property>
+       <widget class="QTableWidget" name="tableWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>671</width>
+          <height>491</height>
+         </rect>
+        </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>335</number>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Kullanıcı adı</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Grup</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QPushButton" name="pushButton_list_user">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>510</y>
+          <width>671</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>24</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Kullanıcıları Listele</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="Line" name="line_3">
+       <property name="geometry">
+        <rect>
+         <x>680</x>
+         <y>0</y>
+         <width>20</width>
+         <height>571</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_4">
