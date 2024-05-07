@@ -125,7 +125,7 @@ background-color: rgb(170, 255, 0);
         <rect>
          <x>150</x>
          <y>30</y>
-         <width>241</width>
+         <width>511</width>
          <height>41</height>
         </rect>
        </property>
@@ -143,7 +143,7 @@ background-color: rgb(170, 255, 0);
         <rect>
          <x>150</x>
          <y>80</y>
-         <width>241</width>
+         <width>511</width>
          <height>41</height>
         </rect>
        </property>
@@ -179,7 +179,7 @@ background-color: rgb(170, 255, 0);
         <rect>
          <x>150</x>
          <y>130</y>
-         <width>241</width>
+         <width>511</width>
          <height>41</height>
         </rect>
        </property>
@@ -299,7 +299,7 @@ background-color:#dfdfdf
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Çıkış Yap</string>
+         <string>Oturumu Kapat</string>
         </property>
         <property name="icon">
          <iconset resource="images/images.qrc">
@@ -349,6 +349,150 @@ background-color:#dfdfdf
          <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
+      </widget>
+      <widget class="QLabel" name="label_11">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>400</y>
+         <width>211</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Disk Kullanımı:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_13">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>450</y>
+         <width>211</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Çalışma Süresi:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_14">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>500</y>
+         <width>211</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Son Güncelleme:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_15">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>350</y>
+         <width>211</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Kernel Versiyonu:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>350</y>
+         <width>421</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>6.6</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_12">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>400</y>
+         <width>421</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>32GB/50GB</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_17">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>450</y>
+         <width>421</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>1 ay 18 gün</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_18">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>500</y>
+         <width>421</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>2024.02.17</string>
+       </property>
       </widget>
      </widget>
     </widget>
