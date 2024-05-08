@@ -26,7 +26,7 @@ background-color: rgb(170, 255, 0);
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="tabWidget_user">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -435,7 +435,7 @@ background-color:#dfdfdf
         <string>Kernel Versiyonu:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_16">
+      <widget class="QLabel" name="label_kernel">
        <property name="geometry">
         <rect>
          <x>240</x>
@@ -453,7 +453,7 @@ background-color:#dfdfdf
         <string>6.6</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_12">
+      <widget class="QLabel" name="label_disk">
        <property name="geometry">
         <rect>
          <x>240</x>
@@ -471,7 +471,7 @@ background-color:#dfdfdf
         <string>32GB/50GB</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_17">
+      <widget class="QLabel" name="label_runtime">
        <property name="geometry">
         <rect>
          <x>240</x>
@@ -489,7 +489,7 @@ background-color:#dfdfdf
         <string>1 ay 18 gün</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_18">
+      <widget class="QLabel" name="label_update">
        <property name="geometry">
         <rect>
          <x>240</x>
@@ -885,7 +885,7 @@ border-radius:10px;
          <string>Dosya İsmi Giriniz</string>
         </property>
        </widget>
-       <widget class="QTableWidget" name="tableWidget">
+       <widget class="QTableWidget" name="tableWidget_file">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -1418,7 +1418,7 @@ background-color:white;
 border-radius:10px;
 }</string>
        </property>
-       <widget class="QTableWidget" name="tableWidget_3">
+       <widget class="QTableWidget" name="tableWidget_service">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -1488,28 +1488,6 @@ border-radius:10px;
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_5">
-     <attribute name="icon">
-      <iconset resource="images/images.qrc">
-       <normaloff>:/images/time.png</normaloff>:/images/time.png</iconset>
-     </attribute>
-     <attribute name="title">
-      <string>Cron Job</string>
-     </attribute>
-     <widget class="QWidget" name="widget_6" native="true">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1001</width>
-        <height>571</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:yellow</string>
-      </property>
-     </widget>
-    </widget>
    </widget>
    <widget class="QWidget" name="widget_5" native="true">
     <property name="geometry">
@@ -1525,7 +1503,7 @@ border-radius:10px;
     </property>
    </widget>
    <zorder>widget_5</zorder>
-   <zorder>tabWidget</zorder>
+   <zorder>tabWidget_user</zorder>
   </widget>
  </widget>
  <resources>
