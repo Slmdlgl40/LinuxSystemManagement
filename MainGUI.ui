@@ -1306,7 +1306,7 @@ background-color:#dfdfdf
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Servsi Durdur</string>
+         <string>Servisi Durdur</string>
         </property>
         <property name="icon">
          <iconset resource="images/images.qrc">
@@ -1432,7 +1432,7 @@ border-radius:10px;
         </attribute>
         <column>
          <property name="text">
-          <string>Service</string>
+          <string>Servis</string>
          </property>
         </column>
        </widget>
