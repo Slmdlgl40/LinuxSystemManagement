@@ -1267,6 +1267,225 @@ border-radius:10px;
       <property name="styleSheet">
        <string notr="true">background-color:yellow</string>
       </property>
+      <widget class="QWidget" name="widget_14" native="true">
+       <property name="geometry">
+        <rect>
+         <x>690</x>
+         <y>0</y>
+         <width>181</width>
+         <height>571</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QToolButton
+{
+background-color:white;
+border-radius:20px;
+}
+
+QToolButton:hover
+{
+background-color:#dfdfdf
+}</string>
+       </property>
+       <widget class="QToolButton" name="toolButton_stop_service">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>160</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Servsi Durdur</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_start_service">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>230</y>
+          <width>160</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Servisi Başlat</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/play.png</normaloff>:/images/play.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_restart_service">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>400</y>
+          <width>160</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string> Yeniden Başlat</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/loading.png</normaloff>:/images/loading.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="widget_15" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>681</width>
+         <height>571</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton
+{
+background-color:white;
+border-radius:20px;
+}
+
+QPushButton:hover
+{
+background-color:#dfdfdf
+}
+
+QTableWidget
+{
+background-color:white;
+border-radius:10px;
+}</string>
+       </property>
+       <widget class="QTableWidget" name="tableWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>671</width>
+          <height>491</height>
+         </rect>
+        </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>670</number>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Service</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QPushButton" name="pushButton_service_active">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>510</y>
+          <width>330</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>24</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Çalışan Servisler</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_service_inactive">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>510</y>
+          <width>330</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>24</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Çalışmayan servisler</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="Line" name="line_4">
+       <property name="geometry">
+        <rect>
+         <x>680</x>
+         <y>0</y>
+         <width>20</width>
+         <height>571</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_5">

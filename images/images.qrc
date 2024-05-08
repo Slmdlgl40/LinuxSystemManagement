@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="images">
+    <file>loading.png</file>
+    <file>play.png</file>
+    <file>stop.png</file>
     <file>add-user.png</file>
     <file>remove-user.png</file>
     <file>no-group.png</file>
