@@ -1,6 +1,6 @@
 import sys
 import paramiko
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QInputDialog, QMessageBox, QLineEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QInputDialog, QMessageBox, QLineEdit, QTableWidgetItem
 from PyQt6.QtCore import QUrl
 from PyQt6.QtGui import QDesktopServices
 from MainGUI import Ui_MainWindow
@@ -18,8 +18,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.toolButton_exit.clicked.connect(self.close)
         self.toolButton_chng_usr.clicked.connect(self.change_user)
-        self.toolButton_disconnect.clicked.connect(self.disconnect)
+        self.toolButton_disconnect.clicked.connect(self.disconn)
         self.toolButton_github.clicked.connect(self.open_github)
+        self.toolButton_new_file.clicked.connect(self.new_file)
+        self.lineEdit_search_file.returnPressed.connect(self.search_file)
+        self.toolButton_delete_file.clicked.connect(self.delete_file)
+        self.toolButton_copy_file.clicked.connect(self.copy_file)
+        self.toolButton_move_file.clicked.connect(self.move_file)
 
 
 
@@ -32,7 +37,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ssh_client.connect(hostname=self.host, port=22, username=self.username, password=self.password)
         self.label_user.setText(self.username)
 
-    def disconnect(self):
+    def disconn(self):
         self.ssh_client.close()
         self.close()
         login_window.lineEdit_user.setText("")
@@ -43,6 +48,91 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def open_github(self):
         url = QUrl("https://github.com/Slmdlgl40/LinuxSystemManagement")
         QDesktopServices.openUrl(url)
+
+    def new_file(self):
+        self.new_filename, _ = QInputDialog.getText(self, "Yeni Dosya", "Dosya adını yolu ile birlikte giriniz.")
+        command = f'touch {self.new_filename}'
+        self.ssh_client.exec_command(command)
+
+    def search_file(self):
+        try:
+            self.tableWidget_file.clearContents()
+            self.tableWidget_file.setRowCount(0)
+            self.file_to_search = self.lineEdit_search_file.text()
+            command = f'find / -name {self.file_to_search} 2> /dev/null'
+            stdin, stdout, stderr = self.ssh_client.exec_command(command)
+            file_result = stdout.readlines()
+            for i in file_result:
+                command2 = f'ls -la {i}'
+                stdin, stdout, stderr = self.ssh_client.exec_command(command2)
+                file_result2 = stdout.readlines()
+                splited_result = file_result2[0].split(' ')
+                filename_searched = splited_result[-1]
+                file_owner = splited_result[2]
+                file_perms = splited_result[0]
+                row_position = self.tableWidget_file.rowCount()
+                self.tableWidget_file.insertRow(row_position)
+                self.tableWidget_file.setItem(row_position, 0, QTableWidgetItem(file_perms))
+                self.tableWidget_file.setItem(row_position, 1, QTableWidgetItem(file_owner))
+                self.tableWidget_file.setItem(row_position, 2, QTableWidgetItem(filename_searched))
+        except Exception as e:
+            QMessageBox.warning(self, "Dosya Arama", "Dosya bulunamadı")
+
+    def delete_file(self):
+        selected_items = self.tableWidget_file.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                file_to_delete = self.tableWidget_file.item(row, column).text()
+                command = f'rm {file_to_delete}'
+                stdin, stdout, stderr = self.ssh_client.exec_command(command)
+                QMessageBox.information(self, "Dosya Silme", "Dosya başarıyla silindi.")
+                self.search_file()
+            except Exception as e:
+                QMessageBox.warning(self, "Dosya Silme", "Dosya silinirken bir hata oluştu.")
+                print(e)
+        else:
+            QMessageBox.warning(self, "Dosya Silme", "Lütfen bir dosya seçin.")
+
+    def copy_file(self):
+        selected_items = self.tableWidget_file.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                file_to_copy = self.tableWidget_file.item(row, column).text()
+                copy_dir, _ = QInputDialog.getText(self, "Dosya Kopyalama", "Dosyanın kopyalanacağı dizini girin.")
+                command = "cp" + " " + file_to_copy.strip() + " " + copy_dir
+                print(command)
+                stdin, stdout, stderr = self.ssh_client.exec_command(command)
+                QMessageBox.information(self, "Dosya Kopyalama", "Dosya başarıyla kopyalandı.")
+                self.search_file()
+            except Exception as e:
+                QMessageBox.warning(self, "Dosya Kopyalama", "Dosya kopyalanırken bir hata oluştu.")
+                print(e)
+        else:
+            QMessageBox.warning(self, "Dosya Kopyalama", "Lütfen bir dosya seçin.")
+
+    def move_file(self):
+        selected_items = self.tableWidget_file.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                file_to_copy = self.tableWidget_file.item(row, column).text()
+                copy_dir, _ = QInputDialog.getText(self, "Dosya Taşıma", "Dosyanın taşınacağı dizini girin.")
+                command = "mv" + " " + file_to_copy.strip() + " " + copy_dir
+                print(command)
+                stdin, stdout, stderr = self.ssh_client.exec_command(command)
+                QMessageBox.information(self, "Dosya Taşıma", "Dosya başarıyla taşındı.")
+                self.search_file()
+            except Exception as e:
+                QMessageBox.warning(self, "Dosya Taşıma", "Dosya taşınırken bir hata oluştu.")
+                print(e)
+        else:
+            QMessageBox.warning(self, "Dosya Taşıma", "Lütfen bir dosya seçin.")
+
 
 class Login_Window(QWidget, Login_Form):
     def __init__(self):
@@ -69,9 +159,8 @@ class Login_Window(QWidget, Login_Form):
             self.close()
             main_window.show()
 
-        except Exception as e:
+        except:
             QMessageBox.warning(self, "Bağlantı Hatası", "Lütfen girdiğiniz bilgileri kontrol edin.")
-            print(e)
 
 class Editor_Window(QWidget, Editor_Form):
     def __init__(self):
