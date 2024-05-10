@@ -218,20 +218,52 @@ class Login_Window(QWidget, Login_Form):
             user = self.lineEdit_user.text()
             host = self.lineEdit_host.text()
             password = self.lineEdit_pass.text()
-            ssh_client = paramiko.SSHClient()
-            ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh_client.connect(hostname=host, port=22, username=user, password=password)
+            self.ssh_client = paramiko.SSHClient()
+            self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.ssh_client.connect(hostname=host, port=22, username=user, password=password)
 
-            main_window.ssh_client = ssh_client
+            main_window.ssh_client = self.ssh_client
             main_window.host = host
             main_window.label_user.setText(user)
             main_window.label_host.setText(host)
-            main_window.ssh_client = ssh_client
+            main_window.ssh_client = self.ssh_client
+            self.kernel_version()
+            self.disk_usage()
+            self.get_uptime()
+            self.get_last_update()
+            self.get_distro()
             self.close()
             main_window.show()
 
         except:
             QMessageBox.warning(self, "Bağlantı Hatası", "Lütfen girdiğiniz bilgileri kontrol edin.")
+
+    def kernel_version(self):
+        stdin, stdout, stderr = self.ssh_client.exec_command('uname -r')
+        kernel_version = stdout.read().decode('utf-8').strip()
+        main_window.label_kernel.setText(kernel_version)
+
+    def disk_usage(self):
+        stdin, stdout, stderr = self.ssh_client.exec_command('df -h')
+        disk_usages = stdout.read().decode('utf-8').split('\n')
+        for line in disk_usages:
+            if line.startswith('/dev/sda'):
+                main_window.label_disk.setText(line.split()[-2])
+
+    def get_uptime(self):
+        stdin, stdout, stderr = self.ssh_client.exec_command('uptime')
+        uptime = stdout.read().decode('utf-8').strip().split(",")
+        main_window.label_runtime.setText(uptime[0][11::])
+
+    def get_last_update(self):
+        stdin, stdout, stderr = self.ssh_client.exec_command('grep "Start-Date" /var/log/apt/history.log | tail -n 1')
+        last_update_date = stdout.read().decode('utf-8').strip().split()
+        main_window.label_update.setText(last_update_date[1])
+
+    def get_distro(self):
+        stdin, stdout, stderr = self.ssh_client.exec_command('cat /etc/*release')
+        output = stdout.read().decode('utf-8').split('\n')
+        main_window.label_distro.setText(output[0].split('=')[1])
 
 class Editor_Window(QWidget, Editor_Form):
     def __init__(self):

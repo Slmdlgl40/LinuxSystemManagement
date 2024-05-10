@@ -135,7 +135,7 @@ background-color: rgb(170, 255, 0);
         </font>
        </property>
        <property name="text">
-        <string>root</string>
+        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_host">
@@ -153,7 +153,7 @@ background-color: rgb(170, 255, 0);
         </font>
        </property>
        <property name="text">
-        <string>10.10.10.10</string>
+        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_3">
@@ -189,7 +189,7 @@ background-color: rgb(170, 255, 0);
         </font>
        </property>
        <property name="text">
-        <string>Ubuntu 18.04</string>
+        <string/>
        </property>
       </widget>
       <widget class="QWidget" name="widget_7" native="true">
@@ -450,7 +450,7 @@ background-color:#dfdfdf
         </font>
        </property>
        <property name="text">
-        <string>6.6</string>
+        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_disk">
@@ -468,7 +468,7 @@ background-color:#dfdfdf
         </font>
        </property>
        <property name="text">
-        <string>32GB/50GB</string>
+        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_runtime">
@@ -486,7 +486,7 @@ background-color:#dfdfdf
         </font>
        </property>
        <property name="text">
-        <string>1 ay 18 gün</string>
+        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_update">
@@ -504,7 +504,7 @@ background-color:#dfdfdf
         </font>
        </property>
        <property name="text">
-        <string>2024.02.17</string>
+        <string/>
        </property>
       </widget>
      </widget>
