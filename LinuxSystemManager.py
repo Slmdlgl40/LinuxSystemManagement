@@ -1,4 +1,3 @@
-import os
 import sys
 import paramiko
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QInputDialog, QMessageBox, QLineEdit, QTableWidgetItem, \
