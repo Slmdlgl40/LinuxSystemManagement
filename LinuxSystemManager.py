@@ -30,6 +30,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.toolButton_edit_file.clicked.connect(self.edit_file)
         self.toolButton_upload_file.clicked.connect(self.upload_file)
         self.toolButton_download_file.clicked.connect(self.download_file)
+        self.pushButton_list_user.clicked.connect(self.list_users)
+        self.toolButton_change_pass.clicked.connect(self.change_pass)
+        self.toolButton_new_user.clicked.connect(self.new_user)
+        self.toolButton_delete_user.clicked.connect(self.delete_user)
+        self.toolButton_add_group.clicked.connect(self.add_to_group)
+        self.toolButton_remove_group.clicked.connect(self.remove_from_group)
 
 
     def change_user(self):
@@ -203,6 +209,156 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             QMessageBox.warning(self, "Dosya İndirme", "Lütfen bir dosya seçin.")
 
+    def list_users(self):
+        self.tableWidget_2.clearContents()
+        self.tableWidget_2.setRowCount(0)
+        stdin, stdout, stderr = self.ssh_client.exec_command('cat /etc/passwd | cut -d: -f1')
+        users = stdout.read().decode().splitlines()
+        for i in users:
+            row_position = self.tableWidget_2.rowCount()
+            self.tableWidget_2.insertRow(row_position)
+            stdin, stdout, stderr = self.ssh_client.exec_command('id -Gn {}'.format(i))
+            groups = stdout.read().decode().strip().split()
+            groups_str = ", ".join(groups)
+            self.tableWidget_2.setItem(row_position, 0, QTableWidgetItem(i))
+            self.tableWidget_2.setItem(row_position, 1, QTableWidgetItem(groups_str))
+
+    def change_pass(self):
+        selected_items = self.tableWidget_2.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                user = self.tableWidget_2.item(row, column).text()
+                userpass, _ = QInputDialog.getText(self, "Şifre Değiştirme", "Giriş yaptığınız kullanıcının şifresini giriniz.")
+                passwd, _ = QInputDialog.getText(self, "Şifre Değiştirme", "Yeni şifreyi giriniz giriniz.")
+
+                transport = self.ssh_client.get_transport()
+                session = transport.open_session()
+                session.set_combine_stderr(True)
+                session.get_pty()
+                session.exec_command("echo '{}:{}' | sudo -k chpasswd".format(user, passwd))
+                stdin = session.makefile('wb', -1)
+                stdout = session.makefile('rb', -1)
+                stdin.write(userpass + '\n')
+                stdin.flush()
+                QMessageBox.information(self, "Şifre Değiştirme", "Şifre başarıyla değiştirildi.")
+
+            except Exception as e:
+                QMessageBox.warning(self, "Şifre Değiştirme", "Şifre değiştirilken hata oluştu.")
+        else:
+            QMessageBox.warning(self, "Şifre Değiştirme", "Lütfen kullanıcı seçin.")
+
+    def new_user(self):
+        userpass, _ = QInputDialog.getText(self, "Yeni Kullanıcı", "Giriş yaptığınız kullanıcının şifresini giriniz.")
+        username, _ = QInputDialog.getText(self, "Yeni kullanıcı","Yeni kullanıcı için kullanıcı adı girin.")
+        if username and userpass:
+            passwd, _ = QInputDialog.getText(self, "Yeni Kullanıcı", "Yeni kullanıcı için parolayı giriniz.")
+            if passwd:
+                try:
+                    transport = self.ssh_client.get_transport()
+                    session = transport.open_session()
+                    session.set_combine_stderr(True)
+                    session.get_pty()
+
+                    adduser_command = 'sudo adduser --disabled-password --gecos "" {}'.format(username)
+                    passwd_command = 'echo "{}:{}" | sudo chpasswd'.format(username, passwd)
+                    combined_command = '{} && {}'.format(adduser_command, passwd_command)
+                    session.exec_command(combined_command)
+
+                    stdin = session.makefile('wb', -1)
+                    stdout = session.makefile('rb', -1)
+                    stdin.write(userpass + '\n')
+                    stdin.flush()
+
+                    QMessageBox.information(self, "Yeni Kullanıcı", "Yeni kullanıcı oluşturuldu.")
+                except Exception as e:
+                    QMessageBox.warning(self, "Yeni Kullanıcı", "Yeni kullanıcı oluştururken hata meydana geldi")
+            else:
+                QMessageBox.warning(self, "Yeni Kullanıcı", "Lütfen şifre girin.")
+        else:
+            QMessageBox.warning(self, "Yeni Kullanıcı", "Lütfen kullanıcı adı girin")
+
+    def delete_user(self):
+        selected_items = self.tableWidget_2.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                user = self.tableWidget_2.item(row, column).text()
+                userpass, _ = QInputDialog.getText(self, "Kullanıcı Silme", "Giriş yaptığınız kullanıcının şifresini giriniz.")
+
+                transport = self.ssh_client.get_transport()
+                session = transport.open_session()
+                session.set_combine_stderr(True)
+                session.get_pty()
+
+                session.exec_command('sudo -k deluser {}'.format(user))
+                stdin = session.makefile('wb', -1)
+                stdout = session.makefile('rb', -1)
+                stdin.write(userpass + '\n')
+                stdin.flush()
+                QMessageBox.information(self, "Kullanıcı Silme", "Kullanıcı silindi.")
+                self.list_users()
+            except Exception as e:
+                QMessageBox.warning(self, "Kullanıcı Silme", "Kullanıcı silerken hata meydana geldi.")
+                print(e)
+        else:
+            QMessageBox.warning(self, "Kullanıcı Silme", "Lütfen kullanıcı seçin.")
+
+    def add_to_group(self):
+        selected_items = self.tableWidget_2.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                user = self.tableWidget_2.item(row, column).text()
+                userpass, _ = QInputDialog.getText(self, "Gruba Ekle", "Giriş yaptığınız kullanıcının şifresini giriniz.")
+                group, _ = QInputDialog.getText(self, "Gruba Ekle", "Kullanıcıyı eklemek istediğiniz grup ismini giriniz.")
+
+                transport = self.ssh_client.get_transport()
+                session = transport.open_session()
+                session.set_combine_stderr(True)
+                session.get_pty()
+
+                session.exec_command('sudo -k usermod -aG {} {}'.format(group, user))
+                stdin = session.makefile('wb', -1)
+                stdout = session.makefile('rb', -1)
+                stdin.write(userpass + '\n')
+                stdin.flush()
+                QMessageBox.information(self, "Gruba Ekle", "Gruba eklendi.")
+                self.list_users()
+            except Exception as e:
+                QMessageBox.warning(self, "Gruba Ekle", "Kullanıcı gruba eklenirken hata meydana geldi.")
+        else:
+            QMessageBox.warning(self, "Gruba Ekle", "Lütfen kullanıcı seçin.")
+
+    def remove_from_group(self):
+        selected_items = self.tableWidget_2.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                user = self.tableWidget_2.item(row, column).text()
+                userpass, _ = QInputDialog.getText(self, "Gruptan çıkar", "Giriş yaptığınız kullanıcının şifresini giriniz.")
+                group, _ = QInputDialog.getText(self, "Gruptan çıkar", "Kullanıcıyı çıkarmak istediğiniz grup ismini giriniz.")
+
+                transport = self.ssh_client.get_transport()
+                session = transport.open_session()
+                session.set_combine_stderr(True)
+                session.get_pty()
+
+                session.exec_command('sudo -k deluser {} {}'.format(user, group))
+                stdin = session.makefile('wb', -1)
+                stdout = session.makefile('rb', -1)
+                stdin.write(userpass + '\n')
+                stdin.flush()
+                QMessageBox.information(self, "Gruptan çıkar", "Gruptan çıkarıldı.")
+                self.list_users()
+            except Exception as e:
+                QMessageBox.warning(self, "Gruptan çıkar", "Kullanıcı gruptan çıkarılırken hata meydana geldi.")
+        else:
+            QMessageBox.warning(self, "Gruptan çıkar", "Lütfen kullanıcı seçin.")
 
 class Login_Window(QWidget, Login_Form):
     def __init__(self):
