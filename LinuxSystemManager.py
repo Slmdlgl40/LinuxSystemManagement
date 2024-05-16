@@ -15,7 +15,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.ssh_client = None
         self.host = None
-
+        self.userpass = None
 
         self.toolButton_exit.clicked.connect(self.close)
         self.toolButton_chng_usr.clicked.connect(self.change_user)
@@ -36,7 +36,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.toolButton_delete_user.clicked.connect(self.delete_user)
         self.toolButton_add_group.clicked.connect(self.add_to_group)
         self.toolButton_remove_group.clicked.connect(self.remove_from_group)
-
+        self.pushButton_service_active.clicked.connect(self.list_running_services)
+        self.pushButton_service_inactive.clicked.connect(self.list_inactive_services)
+        self.toolButton_stop_service.clicked.connect(self.stop_service)
+        self.toolButton_start_service.clicked.connect(self.start_service)
+        self.toolButton_restart_service.clicked.connect(self.restart_service)
 
     def change_user(self):
         self.ssh_client.close()
@@ -230,7 +234,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 row = selected_items[0].row()
                 column = selected_items[0].column()
                 user = self.tableWidget_2.item(row, column).text()
-                userpass, _ = QInputDialog.getText(self, "Şifre Değiştirme", "Giriş yaptığınız kullanıcının şifresini giriniz.")
+                #userpass, _ = QInputDialog.getText(self, "Şifre Değiştirme", "Giriş yaptığınız kullanıcının şifresini giriniz.")
                 passwd, _ = QInputDialog.getText(self, "Şifre Değiştirme", "Yeni şifreyi giriniz giriniz.")
 
                 transport = self.ssh_client.get_transport()
@@ -240,7 +244,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 session.exec_command("echo '{}:{}' | sudo -k chpasswd".format(user, passwd))
                 stdin = session.makefile('wb', -1)
                 stdout = session.makefile('rb', -1)
-                stdin.write(userpass + '\n')
+                stdin.write(self.userpass + '\n')
                 stdin.flush()
                 QMessageBox.information(self, "Şifre Değiştirme", "Şifre başarıyla değiştirildi.")
 
@@ -250,9 +254,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             QMessageBox.warning(self, "Şifre Değiştirme", "Lütfen kullanıcı seçin.")
 
     def new_user(self):
-        userpass, _ = QInputDialog.getText(self, "Yeni Kullanıcı", "Giriş yaptığınız kullanıcının şifresini giriniz.")
         username, _ = QInputDialog.getText(self, "Yeni kullanıcı","Yeni kullanıcı için kullanıcı adı girin.")
-        if username and userpass:
+        if username:
             passwd, _ = QInputDialog.getText(self, "Yeni Kullanıcı", "Yeni kullanıcı için parolayı giriniz.")
             if passwd:
                 try:
@@ -268,10 +271,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                     stdin = session.makefile('wb', -1)
                     stdout = session.makefile('rb', -1)
-                    stdin.write(userpass + '\n')
+                    stdin.write(self.userpass + '\n')
                     stdin.flush()
 
                     QMessageBox.information(self, "Yeni Kullanıcı", "Yeni kullanıcı oluşturuldu.")
+                    self.list_users()
                 except Exception as e:
                     QMessageBox.warning(self, "Yeni Kullanıcı", "Yeni kullanıcı oluştururken hata meydana geldi")
             else:
@@ -286,7 +290,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 row = selected_items[0].row()
                 column = selected_items[0].column()
                 user = self.tableWidget_2.item(row, column).text()
-                userpass, _ = QInputDialog.getText(self, "Kullanıcı Silme", "Giriş yaptığınız kullanıcının şifresini giriniz.")
 
                 transport = self.ssh_client.get_transport()
                 session = transport.open_session()
@@ -296,7 +299,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 session.exec_command('sudo -k deluser {}'.format(user))
                 stdin = session.makefile('wb', -1)
                 stdout = session.makefile('rb', -1)
-                stdin.write(userpass + '\n')
+                stdin.write(self.userpass + '\n')
                 stdin.flush()
                 QMessageBox.information(self, "Kullanıcı Silme", "Kullanıcı silindi.")
                 self.list_users()
@@ -313,7 +316,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 row = selected_items[0].row()
                 column = selected_items[0].column()
                 user = self.tableWidget_2.item(row, column).text()
-                userpass, _ = QInputDialog.getText(self, "Gruba Ekle", "Giriş yaptığınız kullanıcının şifresini giriniz.")
                 group, _ = QInputDialog.getText(self, "Gruba Ekle", "Kullanıcıyı eklemek istediğiniz grup ismini giriniz.")
 
                 transport = self.ssh_client.get_transport()
@@ -324,7 +326,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 session.exec_command('sudo -k usermod -aG {} {}'.format(group, user))
                 stdin = session.makefile('wb', -1)
                 stdout = session.makefile('rb', -1)
-                stdin.write(userpass + '\n')
+                stdin.write(self.userpass + '\n')
                 stdin.flush()
                 QMessageBox.information(self, "Gruba Ekle", "Gruba eklendi.")
                 self.list_users()
@@ -340,7 +342,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 row = selected_items[0].row()
                 column = selected_items[0].column()
                 user = self.tableWidget_2.item(row, column).text()
-                userpass, _ = QInputDialog.getText(self, "Gruptan çıkar", "Giriş yaptığınız kullanıcının şifresini giriniz.")
                 group, _ = QInputDialog.getText(self, "Gruptan çıkar", "Kullanıcıyı çıkarmak istediğiniz grup ismini giriniz.")
 
                 transport = self.ssh_client.get_transport()
@@ -351,7 +352,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 session.exec_command('sudo -k deluser {} {}'.format(user, group))
                 stdin = session.makefile('wb', -1)
                 stdout = session.makefile('rb', -1)
-                stdin.write(userpass + '\n')
+                stdin.write(self.userpass + '\n')
                 stdin.flush()
                 QMessageBox.information(self, "Gruptan çıkar", "Gruptan çıkarıldı.")
                 self.list_users()
@@ -359,6 +360,145 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 QMessageBox.warning(self, "Gruptan çıkar", "Kullanıcı gruptan çıkarılırken hata meydana geldi.")
         else:
             QMessageBox.warning(self, "Gruptan çıkar", "Lütfen kullanıcı seçin.")
+
+    def list_running_services(self):
+        try:
+            self.tableWidget_service.clearContents()
+            self.tableWidget_service.setRowCount(0)
+
+            stdin, stdout, stderr = self.ssh_client.exec_command('systemctl list-units --type=service --state=running')
+            output = stdout.read().decode()
+
+            for line in output.splitlines():
+                parts = line.split()
+
+                if not parts or len(parts) < 1:
+                    continue
+
+                service_name = parts[0]
+                if ".service" in service_name:
+                    row_position = self.tableWidget_service.rowCount()
+                    self.tableWidget_service.insertRow(row_position)
+                    self.tableWidget_service.setItem(row_position, 0, QTableWidgetItem(service_name))
+                else:
+                    continue
+
+            if self.toolButton_start_service.isEnabled():
+                self.toolButton_start_service.setEnabled(False)
+            if not self.toolButton_stop_service.isEnabled():
+                self.toolButton_stop_service.setEnabled(True)
+            if not self.toolButton_restart_service.isEnabled():
+                self.toolButton_restart_service.setEnabled(True)
+
+        except Exception as e:
+            print(e)
+
+    def list_inactive_services(self):
+        try:
+            self.tableWidget_service.clearContents()
+            self.tableWidget_service.setRowCount(0)
+
+            stdin, stdout, stderr = self.ssh_client.exec_command('systemctl list-units --type=service --state=inactive')
+            output = stdout.read().decode()
+
+            for line in output.splitlines():
+                parts = line.split()
+
+                if not parts or len(parts) < 1:
+                    continue
+
+                service_name = parts[0]
+                if ".service" in service_name:
+                    row_position = self.tableWidget_service.rowCount()
+                    self.tableWidget_service.insertRow(row_position)
+                    self.tableWidget_service.setItem(row_position, 0, QTableWidgetItem(service_name))
+                else:
+                    continue
+
+            if not self.toolButton_start_service.isEnabled():
+                self.toolButton_start_service.setEnabled(True)
+            if self.toolButton_stop_service.isEnabled():
+                self.toolButton_stop_service.setEnabled(False)
+            if self.toolButton_restart_service.isEnabled():
+                self.toolButton_restart_service.setEnabled(False)
+
+        except Exception as e:
+            print(e)
+
+    def stop_service(self):
+        selected_items = self.tableWidget_service.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                service = self.tableWidget_service.item(row, column).text()
+
+                transport = self.ssh_client.get_transport()
+                session = transport.open_session()
+                session.set_combine_stderr(True)
+                session.get_pty()
+
+                session.exec_command(f'sudo systemctl stop {service}')
+                stdin = session.makefile('wb', -1)
+                stdout = session.makefile('rb', -1)
+                stdin.write(self.userpass + '\n')
+                stdin.flush()
+                QMessageBox.information(self, "Servis Durdurma", "Servis durduruldu.")
+                self.list_running_services()
+            except Exception as e:
+                QMessageBox.warning(self, "Servis Durdurma", "Servis durdurulurken hata oluştu.")
+        else:
+            QMessageBox.warning(self, "Servis Durdurma", "Lütfen servis seçin.")
+
+    def start_service(self):
+        selected_items = self.tableWidget_service.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                service = self.tableWidget_service.item(row, column).text()
+
+                transport = self.ssh_client.get_transport()
+                session = transport.open_session()
+                session.set_combine_stderr(True)
+                session.get_pty()
+
+                session.exec_command(f'sudo systemctl start {service}')
+                stdin = session.makefile('wb', -1)
+                stdout = session.makefile('rb', -1)
+                stdin.write(self.userpass + '\n')
+                stdin.flush()
+                QMessageBox.information(self, "Servis Başlatma", "Servis başlatıldı.")
+                self.list_inactive_services()
+            except Exception as e:
+                QMessageBox.warning(self, "Servis Başlatma", "Servis başlatılırken hata oluştu.")
+        else:
+            QMessageBox.warning(self, "Servis Başlatma", "Lütfen servis seçin.")
+
+    def restart_service(self):
+        selected_items = self.tableWidget_service.selectedItems()
+        if selected_items:
+            try:
+                row = selected_items[0].row()
+                column = selected_items[0].column()
+                service = self.tableWidget_service.item(row, column).text()
+
+                transport = self.ssh_client.get_transport()
+                session = transport.open_session()
+                session.set_combine_stderr(True)
+                session.get_pty()
+
+                session.exec_command(f'sudo systemctl restart {service}')
+                stdin = session.makefile('wb', -1)
+                stdout = session.makefile('rb', -1)
+                stdin.write(self.userpass + '\n')
+                stdin.flush()
+                QMessageBox.information(self, "Servis Yeniden Başlatma", "Servis yeniden başlatıldı.")
+                self.list_running_services()
+            except Exception as e:
+                QMessageBox.warning(self, "Servis Yeniden Başlatma", "Servis yeniden başlatılırken hata oluştu.")
+        else:
+            QMessageBox.warning(self, "Servis Yeniden Başlatma", "Lütfen servis seçin.")
 
 class Login_Window(QWidget, Login_Form):
     def __init__(self):
@@ -387,6 +527,7 @@ class Login_Window(QWidget, Login_Form):
             self.get_uptime()
             self.get_last_update()
             self.get_distro()
+            main_window.userpass = password
             self.close()
             main_window.show()
 
