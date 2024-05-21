@@ -67,6 +67,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.new_filename, _ = QInputDialog.getText(self, "Yeni Dosya", "Dosya adını yolu ile birlikte giriniz.")
         command = f'touch {self.new_filename}'
         self.ssh_client.exec_command(command)
+        QMessageBox.information(self, "Dosya oluşturma", "Dosya başarıyla oluşturuldu.")
 
     def search_file(self):
         try:
@@ -515,7 +516,7 @@ class Login_Window(QWidget, Login_Form):
             password = self.lineEdit_pass.text()
             self.ssh_client = paramiko.SSHClient()
             self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.ssh_client.connect(hostname=host, port=22, username=user, password=password)
+            self.ssh_client.connect(hostname=host, username=user, password=password)
 
             main_window.ssh_client = self.ssh_client
             main_window.host = host
@@ -531,7 +532,8 @@ class Login_Window(QWidget, Login_Form):
             self.close()
             main_window.show()
 
-        except:
+        except Exception as e:
+            print(e)
             QMessageBox.warning(self, "Bağlantı Hatası", "Lütfen girdiğiniz bilgileri kontrol edin.")
 
     def kernel_version(self):
@@ -553,8 +555,11 @@ class Login_Window(QWidget, Login_Form):
 
     def get_last_update(self):
         stdin, stdout, stderr = self.ssh_client.exec_command('grep "Start-Date" /var/log/apt/history.log | tail -n 1')
-        last_update_date = stdout.read().decode('utf-8').strip().split()
-        main_window.label_update.setText(last_update_date[1])
+        if stderr:
+            main_window.label_update.setText("Henüz Güncellenmemiş")
+        else:
+            last_update_date = stdout.read().decode('utf-8').strip().split()
+            main_window.label_update.setText(last_update_date[1])
 
     def get_distro(self):
         stdin, stdout, stderr = self.ssh_client.exec_command('cat /etc/*release')
